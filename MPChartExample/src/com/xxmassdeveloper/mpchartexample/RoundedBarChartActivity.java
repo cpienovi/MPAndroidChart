@@ -4,14 +4,15 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.renderer.BarChartRenderer;
 
 import java.util.ArrayList;
@@ -20,8 +21,8 @@ import java.util.Random;
 
 public class RoundedBarChartActivity extends FragmentActivity {
 
-    public static final float Y_MAX = 100f;
-    public static final float Y_MIN = 0f;
+    private static final float Y_MAX = 100f;
+    private static final float Y_MIN = 0f;
 
     private BarChart barChart;
 
@@ -51,6 +52,12 @@ public class RoundedBarChartActivity extends FragmentActivity {
         barChart.getXAxis().setGranularity(1f);
         barChart.getXAxis().setTextColor(colorTextAxis);
         barChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        barChart.getXAxis().setValueFormatter(new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                return "Mon\n" + String.valueOf(value);
+            }
+        });
         barChart.setTouchEnabled(false);
         barChart.setNoDataTextColor(Color.WHITE);
         barChart.setMinOffset(0f);
@@ -63,7 +70,6 @@ public class RoundedBarChartActivity extends FragmentActivity {
         List<BarEntry> entries = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
             float yValue = new Random().nextInt((int) Y_MAX);
-            Log.d("GATA", "y value = " + yValue);
             entries.add(new BarEntry(i, new float[]{Y_MIN, yValue, Y_MAX - yValue}));
         }
         BarDataSet dataSet = new BarDataSet(entries, null);
