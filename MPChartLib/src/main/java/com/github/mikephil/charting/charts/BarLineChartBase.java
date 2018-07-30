@@ -46,6 +46,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         IBarLineScatterCandleBubbleDataSet<? extends Entry>>>
         extends Chart<T> implements BarLineScatterCandleBubbleDataProvider {
 
+    private static final int DRAG_Y_THRESHOLD = 600;
+
     /**
      * the maximum number of entries to which values will be drawn
      * (entry numbers greater than this value will cause value-labels to disappear)
@@ -132,6 +134,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     protected Transformer mRightAxisTransformer;
 
     protected XAxisRenderer mXAxisRenderer;
+
+    private float x1, x2, y1, y2, dx, dy;
 
     // /** the approximator object used for data filtering */
     // private Approximator mApproximator;
@@ -560,6 +564,25 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                x1 = event.getX();
+                y1 = event.getY();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                x2 = event.getX();
+                y2 = event.getY();
+                dx = x2 - x1;
+                dy = y2 - y1;
+
+                if (Math.abs(dx) > Math.abs(dy) && Math.abs(dy) < DRAG_Y_THRESHOLD) {
+                    getParent().requestDisallowInterceptTouchEvent(getData() != null);
+                } else {
+                    getParent().requestDisallowInterceptTouchEvent(false);
+                }
+                break;
+        }
+
         super.onTouchEvent(event);
 
         if (mChartTouchListener == null || mData == null)
