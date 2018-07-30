@@ -61,12 +61,12 @@ public class YAxis extends AxisBase {
     /**
      * axis space from the largest value to the top in percent of the total axis range
      */
-    protected float mSpacePercentTop = 10f;
+    protected float mSpacePercentTop = 0f;
 
     /**
      * axis space from the smallest value to the bottom in percent of the total axis range
      */
-    protected float mSpacePercentBottom = 10f;
+    protected float mSpacePercentBottom = 0f;
 
     /**
      * the position of the y-labels relative to the chart
