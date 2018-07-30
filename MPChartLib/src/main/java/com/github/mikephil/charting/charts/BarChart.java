@@ -281,8 +281,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
                 break;
         }
 
-        super.onTouchEvent(event);
-        return getData() != null;
+        return super.onTouchEvent(event);
     }
 
 }

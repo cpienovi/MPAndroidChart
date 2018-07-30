@@ -73,7 +73,6 @@ public class LineChart extends BarLineChartBase<LineData> implements LineDataPro
                 break;
         }
 
-        super.onTouchEvent(event);
-        return getData() != null;
+        return super.onTouchEvent(event);
     }
 }
