@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -37,6 +38,9 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
     private boolean mDrawBarShadow = false;
 
     private boolean mFitBars = false;
+
+    public static final int DRAG_Y_THRESHOLD = 600;
+    private float x1, x2, y1, y2, dx, dy;
 
     public BarChart(Context context) {
         super(context);
@@ -255,4 +259,30 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
             notifyDataSetChanged();
         }
     }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                x1 = event.getX();
+                y1 = event.getY();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                x2 = event.getX();
+                y2 = event.getY();
+                dx = x2 - x1;
+                dy = y2 - y1;
+
+                if (Math.abs(dx) > Math.abs(dy) && Math.abs(dy) < DRAG_Y_THRESHOLD) {
+                    getParent().requestDisallowInterceptTouchEvent(getData() != null);
+                } else {
+                    getParent().requestDisallowInterceptTouchEvent(false);
+                }
+                break;
+        }
+
+        super.onTouchEvent(event);
+        return getData() != null;
+    }
+
 }
