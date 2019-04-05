@@ -40,6 +40,7 @@ import com.xxmassdeveloper.mpchartexample.PiePolylineChartActivity;
 import com.xxmassdeveloper.mpchartexample.R;
 import com.xxmassdeveloper.mpchartexample.RadarChartActivity;
 import com.xxmassdeveloper.mpchartexample.RealtimeLineChartActivity;
+import com.xxmassdeveloper.mpchartexample.RoundedBarChartActivity;
 import com.xxmassdeveloper.mpchartexample.ScatterChartActivity;
 import com.xxmassdeveloper.mpchartexample.ScrollViewActivity;
 import com.xxmassdeveloper.mpchartexample.StackedBarActivity;
@@ -89,37 +90,38 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         objects.add(15, new ContentItem("Negative", "Positive and negative values with unique colors."));
         objects.add(16, new ContentItem("Stacked 2", "Stacked bar chart with negative values."));
         objects.add(17, new ContentItem("Sine", "Sine function in bar chart format."));
+        objects.add(18, new ContentItem("Rounded", "Rounded bar chart."));
 
         ////
-        objects.add(18, new ContentItem("Pie Charts"));
+        objects.add(19, new ContentItem("Pie Charts"));
 
-        objects.add(19, new ContentItem("Basic", "Simple pie chart."));
-        objects.add(20, new ContentItem("Value Lines", "Stylish lines drawn outward from slices."));
-        objects.add(21, new ContentItem("Half Pie", "180° (half) pie chart."));
-
-        ////
-        objects.add(22, new ContentItem("Other Charts"));
-
-        objects.add(23, new ContentItem("Combined Chart", "Bar and line chart together."));
-        objects.add(24, new ContentItem("Scatter Plot", "Simple scatter plot."));
-        objects.add(25, new ContentItem("Bubble Chart", "Simple bubble chart."));
-        objects.add(26, new ContentItem("Candlestick", "Simple financial chart."));
-        objects.add(27, new ContentItem("Radar Chart", "Simple web chart."));
+        objects.add(20, new ContentItem("Basic", "Simple pie chart."));
+        objects.add(21, new ContentItem("Value Lines", "Stylish lines drawn outward from slices."));
+        objects.add(22, new ContentItem("Half Pie", "180° (half) pie chart."));
 
         ////
-        objects.add(28, new ContentItem("Scrolling Charts"));
+        objects.add(23, new ContentItem("Other Charts"));
 
-        objects.add(29, new ContentItem("Multiple", "Various types of charts as fragments."));
-        objects.add(30, new ContentItem("View Pager", "Swipe through different charts."));
-        objects.add(31, new ContentItem("Tall Bar Chart", "Bars bigger than your screen!"));
-        objects.add(32, new ContentItem("Many Bar Charts", "More bars than your screen can handle!"));
+        objects.add(24, new ContentItem("Combined Chart", "Bar and line chart together."));
+        objects.add(25, new ContentItem("Scatter Plot", "Simple scatter plot."));
+        objects.add(26, new ContentItem("Bubble Chart", "Simple bubble chart."));
+        objects.add(27, new ContentItem("Candlestick", "Simple financial chart."));
+        objects.add(28, new ContentItem("Radar Chart", "Simple web chart."));
 
         ////
-        objects.add(33, new ContentItem("Even More Line Charts"));
+        objects.add(29, new ContentItem("Scrolling Charts"));
 
-        objects.add(34, new ContentItem("Dynamic", "Build a line chart by adding points and sets."));
-        objects.add(35, new ContentItem("Realtime", "Add data points in realtime."));
-        objects.add(36, new ContentItem("Hourly", "Uses the current time to add a data point for each hour."));
+        objects.add(30, new ContentItem("Multiple", "Various types of charts as fragments."));
+        objects.add(31, new ContentItem("View Pager", "Swipe through different charts."));
+        objects.add(32, new ContentItem("Tall Bar Chart", "Bars bigger than your screen!"));
+        objects.add(33, new ContentItem("Many Bar Charts", "More bars than your screen can handle!"));
+
+        ////
+        objects.add(34, new ContentItem("Even More Line Charts"));
+
+        objects.add(35, new ContentItem("Dynamic", "Build a line chart by adding points and sets."));
+        objects.add(36, new ContentItem("Realtime", "Add data points in realtime."));
+        objects.add(37, new ContentItem("Hourly", "Uses the current time to add a data point for each hour."));
         //objects.add(37, new ContentItem("Realm.io Examples", "See more examples that use Realm.io mobile database."));
 
         MyAdapter adapter = new MyAdapter(this, objects);
@@ -184,49 +186,52 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
             case 17:
                 i = new Intent(this, BarChartActivitySinus.class);
                 break;
-            case 19:
-                i = new Intent(this, PieChartActivity.class);
+            case 18:
+                i = new Intent(this, RoundedBarChartActivity.class);
                 break;
             case 20:
-                i = new Intent(this, PiePolylineChartActivity.class);
+                i = new Intent(this, PieChartActivity.class);
                 break;
             case 21:
+                i = new Intent(this, PiePolylineChartActivity.class);
+                break;
+            case 22:
                 i = new Intent(this, HalfPieChartActivity.class);
                 break;
-            case 23:
+            case 24:
                 i = new Intent(this, CombinedChartActivity.class);
                 break;
-            case 24:
+            case 25:
                 i = new Intent(this, ScatterChartActivity.class);
                 break;
-            case 25:
+            case 26:
                 i = new Intent(this, BubbleChartActivity.class);
                 break;
-            case 26:
+            case 27:
                 i = new Intent(this, CandleStickChartActivity.class);
                 break;
-            case 27:
+            case 28:
                 i = new Intent(this, RadarChartActivity.class);
                 break;
-            case 29:
+            case 30:
                 i = new Intent(this, ListViewMultiChartActivity.class);
                 break;
-            case 30:
+            case 31:
                 i = new Intent(this, SimpleChartDemo.class);
                 break;
-            case 31:
+            case 32:
                 i = new Intent(this, ScrollViewActivity.class);
                 break;
-            case 32:
+            case 33:
                 i = new Intent(this, ListViewBarChartActivity.class);
                 break;
-            case 34:
+            case 35:
                 i = new Intent(this, DynamicalAddingActivity.class);
                 break;
-            case 35:
+            case 36:
                 i = new Intent(this, RealtimeLineChartActivity.class);
                 break;
-            case 36:
+            case 37:
                 i = new Intent(this, LineChartTime.class);
                 break;
             /*case 37:

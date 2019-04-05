@@ -142,10 +142,17 @@ public abstract class Utils {
      * @return
      */
     public static int calcTextWidth(Paint paint, String demoText) {
-        return (int) paint.measureText(demoText);
+        int width = 0;
+
+        for (String line : demoText.split("\n")) {
+            width = Math.max(width, (int) paint.measureText(line));
+        }
+
+        return width;
     }
 
     private static Rect mCalcTextHeightRect = new Rect();
+
     /**
      * calculates the approximate height of a text, depending on a demo text
      * avoid repeated calls (e.g. inside drawing methods)
@@ -155,11 +162,17 @@ public abstract class Utils {
      * @return
      */
     public static int calcTextHeight(Paint paint, String demoText) {
+        int height = 0;
 
         Rect r = mCalcTextHeightRect;
-        r.set(0,0,0,0);
-        paint.getTextBounds(demoText, 0, demoText.length(), r);
-        return r.height();
+        r.set(0, 0, 0, 0);
+
+        for (String line : demoText.split("\n")) {
+            paint.getTextBounds(line, 0, line.length(), r);
+            height += r.height();
+        }
+
+        return height;
     }
 
     private static Paint.FontMetrics mFontMetrics = new Paint.FontMetrics();
@@ -168,7 +181,7 @@ public abstract class Utils {
         return getLineHeight(paint, mFontMetrics);
     }
 
-    public static float getLineHeight(Paint paint, Paint.FontMetrics fontMetrics){
+    public static float getLineHeight(Paint paint, Paint.FontMetrics fontMetrics) {
         paint.getFontMetrics(fontMetrics);
         return fontMetrics.descent - fontMetrics.ascent;
     }
@@ -177,7 +190,7 @@ public abstract class Utils {
         return getLineSpacing(paint, mFontMetrics);
     }
 
-    public static float getLineSpacing(Paint paint, Paint.FontMetrics fontMetrics){
+    public static float getLineSpacing(Paint paint, Paint.FontMetrics fontMetrics) {
         paint.getFontMetrics(fontMetrics);
         return fontMetrics.ascent - fontMetrics.top + fontMetrics.bottom;
     }
@@ -193,12 +206,13 @@ public abstract class Utils {
      */
     public static FSize calcTextSize(Paint paint, String demoText) {
 
-        FSize result = FSize.getInstance(0,0);
+        FSize result = FSize.getInstance(0, 0);
         calcTextSize(paint, demoText, result);
         return result;
     }
 
     private static Rect mCalcTextSizeRect = new Rect();
+
     /**
      * calculates the approximate size of a text, depending on a demo text
      * avoid repeated calls (e.g. inside drawing methods)
@@ -208,13 +222,19 @@ public abstract class Utils {
      * @param outputFSize An output variable, modified by the function.
      */
     public static void calcTextSize(Paint paint, String demoText, FSize outputFSize) {
+        int width = 0;
+        int height = 0;
 
         Rect r = mCalcTextSizeRect;
-        r.set(0,0,0,0);
-        paint.getTextBounds(demoText, 0, demoText.length(), r);
-        outputFSize.width = r.width();
-        outputFSize.height = r.height();
+        r.set(0, 0, 0, 0);
+        for (String line : demoText.split("\n")) {
+            paint.getTextBounds(line, 0, line.length(), r);
+            width = Math.max(width, r.width());
+            height += r.height();
+        }
 
+        outputFSize.width = width;
+        outputFSize.height = height;
     }
 
 
@@ -350,8 +370,8 @@ public abstract class Utils {
      */
     public static float roundToNextSignificant(double number) {
         if (Double.isInfinite(number) ||
-            Double.isNaN(number) ||
-            number == 0.0)
+                Double.isNaN(number) ||
+                number == 0.0)
             return 0;
 
         final float d = (float) Math.ceil((float) Math.log10(number < 0 ? -number : number));
@@ -393,9 +413,9 @@ public abstract class Utils {
         return ret;
     }
 
-    public static void copyIntegers(List<Integer> from, int[] to){
+    public static void copyIntegers(List<Integer> from, int[] to) {
         int count = to.length < from.size() ? to.length : from.size();
-        for(int i = 0 ; i < count ; i++){
+        for (int i = 0; i < count; i++) {
             to[i] = from.get(i);
         }
     }
@@ -417,9 +437,9 @@ public abstract class Utils {
         return ret;
     }
 
-    public static void copyStrings(List<String> from, String[] to){
+    public static void copyStrings(List<String> from, String[] to) {
         int count = to.length < from.size() ? to.length : from.size();
-        for(int i = 0 ; i < count ; i++){
+        for (int i = 0; i < count; i++) {
             to[i] = from.get(i);
         }
     }
@@ -453,12 +473,12 @@ public abstract class Utils {
      */
     public static MPPointF getPosition(MPPointF center, float dist, float angle) {
 
-        MPPointF p = MPPointF.getInstance(0,0);
+        MPPointF p = MPPointF.getInstance(0, 0);
         getPosition(center, dist, angle, p);
         return p;
     }
 
-    public static void getPosition(MPPointF center, float dist, float angle, MPPointF outputPoint){
+    public static void getPosition(MPPointF center, float dist, float angle, MPPointF outputPoint) {
         outputPoint.x = (float) (center.x + dist * Math.cos(Math.toRadians(angle)));
         outputPoint.y = (float) (center.y + dist * Math.sin(Math.toRadians(angle)));
     }
@@ -559,6 +579,13 @@ public abstract class Utils {
         final float lineHeight = paint.getFontMetrics(mFontMetricsBuffer);
         paint.getTextBounds(text, 0, text.length(), mDrawTextRectBuffer);
 
+        int width = 0;
+
+        for (String line : text.split("\n")) {
+            paint.getTextBounds(line, 0, line.length(), mDrawTextRectBuffer);
+            width = Math.max(width, mDrawTextRectBuffer.width());
+        }
+
         // Android sometimes has pre-padding
         drawOffsetX -= mDrawTextRectBuffer.left;
 
@@ -569,12 +596,12 @@ public abstract class Utils {
 
         // To have a consistent point of reference, we always draw left-aligned
         Paint.Align originalTextAlign = paint.getTextAlign();
-        paint.setTextAlign(Paint.Align.LEFT);
+        paint.setTextAlign(Paint.Align.CENTER);
 
         if (angleDegrees != 0.f) {
 
             // Move the text drawing rect in a way that it always rotates around its center
-            drawOffsetX -= mDrawTextRectBuffer.width() * 0.5f;
+            drawOffsetX -= width * 0.5f;
             drawOffsetY -= lineHeight * 0.5f;
 
             float translateX = x;
@@ -583,7 +610,7 @@ public abstract class Utils {
             // Move the "outer" rect relative to the anchor, assuming its centered
             if (anchor.x != 0.5f || anchor.y != 0.5f) {
                 final FSize rotatedSize = getSizeOfRotatedRectangleByDegrees(
-                        mDrawTextRectBuffer.width(),
+                        width,
                         lineHeight,
                         angleDegrees);
 
@@ -596,20 +623,26 @@ public abstract class Utils {
             c.translate(translateX, translateY);
             c.rotate(angleDegrees);
 
-            c.drawText(text, drawOffsetX, drawOffsetY, paint);
+            for (String line : text.split("\n")) {
+                c.drawText(line, drawOffsetX, drawOffsetY, paint);
+                drawOffsetY += paint.descent() - paint.ascent();
+            }
 
             c.restore();
         } else {
             if (anchor.x != 0.f || anchor.y != 0.f) {
 
-                drawOffsetX -= mDrawTextRectBuffer.width() * anchor.x;
+                drawOffsetX -= width * anchor.x;
                 drawOffsetY -= lineHeight * anchor.y;
             }
 
-            drawOffsetX += x;
+            drawOffsetX += x + (width / 2f);
             drawOffsetY += y;
 
-            c.drawText(text, drawOffsetX, drawOffsetY, paint);
+            for (String line : text.split("\n")) {
+                c.drawText(line, drawOffsetX, drawOffsetY, paint);
+                drawOffsetY += paint.descent() - paint.ascent();
+            }
         }
 
         paint.setTextAlign(originalTextAlign);
