@@ -65,6 +65,10 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
         } else {
             Range[] ranges = entry.getRanges();
 
+            if(ranges == null) {
+                return high;
+            }
+
             if (ranges.length > 0) {
                 int stackIndex = getClosestStackIndex(ranges, yVal);
 
